@@ -13,7 +13,7 @@ from typing import Optional
 
 
 UP_API_KEY = os.getenv("UP_API_KEY")
-SAVING_ACCOUNT_NAME = "Work Lunch"
+SAVING_ACCOUNT_NAME = "Utilities"
 
 auth_header = {"Authorization": f"Bearer {UP_API_KEY}"}
 
@@ -43,7 +43,7 @@ accounts_resp = requests.get(
 for account in accounts_resp.json()["data"]:
     if (
         SAVING_ACCOUNT_NAME in account["attributes"]["displayName"]
-        and account["attributes"]["ownershipType"] == "INDIVIDUAL"
+        # and account["attributes"]["ownershipType"] == "INDIVIDUAL"
     ):
         found_account = Account(
             id=account["id"],
@@ -64,7 +64,7 @@ transactions_resp = requests.get(
     f"https://api.up.com.au/api/v1/accounts/{found_account.id}/transactions",
     params={
         "page[size]": 100,
-        "filter[since]": (dt.datetime.now(dt.timezone.utc) - dt.timedelta(weeks=20)).isoformat(),
+        "filter[since]": (dt.datetime.now(dt.timezone.utc) - dt.timedelta(weeks=52)).isoformat(),
     },
     headers=auth_header,
 )
@@ -103,8 +103,7 @@ app.layout = html.Div([
     Input('dropdown-selection', 'value')
 )
 def update_graph(value):
-    # dff = df[df.country==value]
-    return px.line(df, x='datetime', y='balance')
+    return px.line(df, x='datetime', y='balance', line_shape="hv")
 
 if __name__ == '__main__':
     app.run(debug=True)
