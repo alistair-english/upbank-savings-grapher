@@ -1,0 +1,15 @@
+services:
+  rss-notifier:
+    build: .
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/code/
+    env_file: .env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=6969
+    ports:
+      - 6969:6969
+    command: python3 /code/main.py
+networks: {}
