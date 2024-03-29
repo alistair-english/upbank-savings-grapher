@@ -1,5 +1,5 @@
 services:
-  rss-notifier:
+  main:
     build: .
     restart: unless-stopped
     tty: true
