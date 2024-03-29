@@ -23,7 +23,7 @@ app.layout = html.Div(
 def update_graph(value):
     account_id = ACCOUNTS[value]
     df = up.get_balance_df(account_id, lookback=dt.timedelta(weeks=104))
-    return px.line(df, x="datetime", y="balance")
+    return px.line(df, x="datetime", y="balance", line_shape="vh")
 
 
 if __name__ == "__main__":

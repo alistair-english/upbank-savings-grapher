@@ -69,6 +69,8 @@ def get_balance_df(account_id: str, lookback: dt.timedelta) -> pd.DataFrame:
             transactions.append(Transaction(time, -value))
 
     df = pd.DataFrame(transactions)
-    df["balance"] = df["value"].cumsum() / 100
+    df["balance"] = (df["value"].cumsum() / 100).shift(1)
+    df["balance"].iloc[0] = df["balance"].iloc[1]
+    print(df)
 
     return df
